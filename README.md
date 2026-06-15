@@ -303,12 +303,16 @@ Après la migration, une vérification du nombre d'objets (tables, indexes, cont
 Coté Oracle:
 Nombre  d'objets:
 > 📄 Script : [scripts/02_check_oracle_nb_objects.sql](scripts/02_check_oracle_nb_objects.sql)
+
 Nombre de lignes:
 > 📄 Script : [scripts/03_check_oracle_nb_lignes.sql](scripts/03_check_oracle_nb_lignes.sql)
+
 Coté PostgreSQL:
 Nombre d'objets:
 > 📄 Script : [scripts/04_check_postgres_nb_objects.sql](scripts/04_check_postgres_nb_objects.sql)
+
 Nombre de lignes
+
 > 📄 Script : [scripts/05_check_postgres_nb_lignes.sql](scripts/05_check_postgres_nb_lignes.sql)
 
 ## 11. Problèmes rencontrés et corrections
