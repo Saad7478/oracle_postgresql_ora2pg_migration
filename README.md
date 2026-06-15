@@ -162,24 +162,7 @@ ora2pg -p -t SEQUENCE_VALUES \
 
 ## 5. Création de la base cible PostgreSQL
 
-```sql
--- Création du rôle mnt_user
-CREATE ROLE mnt_user LOGIN PASSWORD '<mot_de_passe_fort>';
-
--- Création de la base
-CREATE DATABASE mnt_db OWNER mnt_user;
-
--- Connexion à la base
-\c mnt_db
-
--- Création du schéma applicatif
-CREATE SCHEMA mnt AUTHORIZATION mnt_user;
-
--- search_path par défaut
-ALTER ROLE mnt_user SET search_path = mnt, public;
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-```
+> 📄 Script : [scripts/01_create_target_db.sql](scripts/01_create_target_db.sql)
 
 > **Remarques :**
 > - Utiliser `ALTER ROLE ... SET search_path` plutôt qu'un `SET` de session, pour que le paramètre soit persistant.
@@ -319,98 +302,14 @@ Après la migration, une vérification du nombre d'objets (tables, indexes, cont
 
 Coté Oracle:
 Nombre  d'objets:
-```sql
-SELECT
-    (SELECT COUNT(*)
-     FROM all_tables
-     WHERE owner = 'GEDMNT') AS nb_tables,
-
-    (SELECT COUNT(*)
-     FROM all_constraints
-     WHERE owner = 'GEDMNT') AS nb_contraintes,
-
-    (SELECT COUNT(*)
-     FROM all_indexes
-     WHERE owner = 'GEDMNT') AS nb_index
-FROM dual;
-```
+> 📄 Script : [scripts/02_check_oracle_nb_objects.sql](scripts/02_check_oracle_nb_objects.sql)
 Nombre de lignes:
-```sql
-SET SERVEROUTPUT ON SIZE UNLIMITED;
-DECLARE
-    v_table_count INTEGER := 0;
-    v_owner       VARCHAR2(30) := 'GEDMNT';
-BEGIN
-    FOR r IN (
-        SELECT table_name 
-        FROM all_tables
-        WHERE owner = v_owner
-          AND nested = 'NO' 
-          AND secondary = 'N'
-          AND (iot_type IS NULL OR iot_type != 'IOT_OVERFLOW')
-        ORDER BY table_name
-    ) 
-    LOOP
-        EXECUTE IMMEDIATE 'SELECT count(*) FROM ' || DBMS_ASSERT.ENQUOTE_NAME(v_owner) 
-                          || '.' || DBMS_ASSERT.ENQUOTE_NAME(r.table_name)
-        INTO v_table_count;
-        
-        DBMS_OUTPUT.PUT_LINE('Table ' || v_owner || '.' || r.table_name || ' = ' || v_table_count || ' lignes');
-        
-    END LOOP;
-    
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erreur rencontrée : ' || SQLERRM);
-END;
-/
-```
+> 📄 Script : [scripts/03_check_oracle_nb_lignes.sql](scripts/03_check_oracle_nb_lignes.sql)
 Coté PostgreSQL:
 Nombre d'objets:
-```sql
-SELECT
-    (SELECT COUNT(*)
-     FROM information_schema.tables
-     WHERE table_schema = 'mnt'
-       AND table_type = 'BASE TABLE') AS nb_tables,
-
-    (SELECT COUNT(*)
-     FROM pg_constraint con
-     JOIN pg_namespace n
-       ON n.oid = con.connamespace
-     WHERE n.nspname = 'mnt') AS nb_contraintes,
-
-    (SELECT COUNT(*)
-     FROM pg_indexes
-     WHERE schemaname = 'mnt') AS nb_index;
-```
+> 📄 Script : [scripts/04_check_postgres_nb_objects.sql](scripts/04_check_postgres_nb_objects.sql)
 Nombre de lignes
-```sql
-DO $$
-<<first_block>>
-DECLARE
-    table_count integer := 0;
-    target_schema text := 'mnt';
-    r RECORD;
-BEGIN
-    FOR r IN
-        SELECT c.relname AS table_name
-        FROM pg_class AS c
-        JOIN pg_namespace AS n ON n.oid = c.relnamespace
-        WHERE n.nspname = target_schema
-          AND NOT EXISTS (SELECT 1 FROM pg_inherits AS i WHERE i.inhrelid = c.oid)
-          AND c.relkind IN ('r', 'p')
-        ORDER BY c.relname
-    LOOP
-        EXECUTE format('SELECT count(*) FROM %I.%I', target_schema, r.table_name)
-        INTO table_count;
-        RAISE NOTICE 'Table %.% = % lignes', target_schema, r.table_name, table_count;
-    END LOOP;
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE NOTICE 'Erreur : %', SQLERRM;
-END first_block $$;
-```
+> 📄 Script : [scripts/05_check_postgres_nb_lignes.sql](scripts/05_check_postgres_nb_lignes.sql)
 
 ## 11. Problèmes rencontrés et corrections
 
