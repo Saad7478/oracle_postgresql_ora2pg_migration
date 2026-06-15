@@ -301,6 +301,7 @@ time /t && psql -h <host> -d mnt_db -U mnt_user \
 Après la migration, une vérification du nombre d'objets (tables, indexes, contraintes) ainsi que le nombre de lignes dans chaque table a été effectué dans Oracle et PostgreSQL.
 
 Coté Oracle:
+
 Nombre  d'objets:
 > 📄 Script : [scripts/02_check_oracle_nb_objects.sql](scripts/02_check_oracle_nb_objects.sql)
 
@@ -308,6 +309,7 @@ Nombre de lignes:
 > 📄 Script : [scripts/03_check_oracle_nb_lignes.sql](scripts/03_check_oracle_nb_lignes.sql)
 
 Coté PostgreSQL:
+
 Nombre d'objets:
 > 📄 Script : [scripts/04_check_postgres_nb_objects.sql](scripts/04_check_postgres_nb_objects.sql)
 
