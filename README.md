@@ -384,10 +384,8 @@ EXCLUDE_TABLE = SYS_EXPORT_TABLE_01
 
 ## 12. Prochaine étape
 
-Ce projet est une phase de test préparatoire à une migration 
-de production : base Oracle 19c de 2,5 To avec partitionnement.
-Les enseignements tirés ici (encodage, mapping de types, ordre 
-d'exécution) seront appliqués à cette migration à plus grande échelle.
+Ce projet a servi de base de validation avant la migration d'une autre base Oracle 19c de production de 2,5 To avec partitionnement.
+Les enseignements tirés ici (encodage, mapping de types, ordre d'exécution) seront appliqués à cette migration à plus grande échelle.
 
 ## 13. Bilan et axes d'amélioration
 
@@ -423,4 +421,4 @@ d'exécution) seront appliqués à cette migration à plus grande échelle.
 
 > **Environnement :** ora2pg · Oracle 19c · PostgreSQL 15.7 · Windows · Ubuntu 20.04
 
-> **Repo :** [github.com/Saad7478](https://github.com/Saad7478)
+> **Repo :** [github.com/Saad7478](https://github.com/Saad7478/oracle_postgresql_ora2pg_migration)
