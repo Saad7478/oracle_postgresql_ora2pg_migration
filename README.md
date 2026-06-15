@@ -20,7 +20,8 @@
 9. [Application des contraintes et index](#9-application-des-contraintes-et-index)
 10. [Vérification post-migration](#10-vérification-post-migration)
 11. [Problèmes rencontrés et corrections](#11-problèmes-rencontrés-et-corrections)
-12. [Bilan et axes d'amélioration](#12-bilan-et-axes-d'amélioration)
+12. [Prochaine étape](#12-prochaine-étape)
+13. [Bilan et axes d'amélioration](#12-bilan-et-axes-d'amélioration)
 
 ## 1. Contexte et périmètre
 
@@ -381,8 +382,14 @@ EXCLUDE_TABLE = SYS_EXPORT_TABLE_01
 
 **Correction recommandée :** automatiser via PowerShell (voir section 8.1).
 
+## 12. Prochaine étape
 
-## 12. Bilan et axes d'amélioration
+Ce projet est une phase de test préparatoire à une migration 
+de production : base Oracle 19c de 2,5 To avec partitionnement.
+Les enseignements tirés ici (encodage, mapping de types, ordre 
+d'exécution) seront appliqués à cette migration à plus grande échelle.
+
+## 13. Bilan et axes d'amélioration
 
 ### Synthèse de la migration
 
@@ -413,5 +420,7 @@ EXCLUDE_TABLE = SYS_EXPORT_TABLE_01
 | Artefacts Oracle | Utiliser `EXCLUDE_TABLE` pour filtrer les tables non applicatives |
 | Vérification counts | Comparer Oracle vs PostgreSQL sur toutes les tables post-import |
 
+
 > **Environnement :** ora2pg · Oracle 19c · PostgreSQL 15.7 · Windows · Ubuntu 20.04
+
 > **Repo :** [github.com/Saad7478](https://github.com/Saad7478)
