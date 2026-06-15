@@ -499,18 +499,14 @@ EXCLUDE_TABLE = SYS_EXPORT_TABLE_01
 - Activation de `\set ON_ERROR_STOP ON`
 - Débit global satisfaisant (~4 650 recs/sec en moyenne sur 21,7 M lignes via SSL)
 
-### Axes d'amélioration pour les prochaines migrations
+### Axes d'amélioration avant la migration de la base de 2,5To
 
 | Point | Action recommandée |
 |---|---|
-| Évaluation initiale | Toujours générer le `SHOW_REPORT` avant de commencer |
 | Encodage | Configurer `NLS_LANG` dans `ora2pg.conf` — ne pas corriger manuellement |
 | Mapping de types | Auditer `table.sql` et utiliser `DATA_TYPE = NUMBER:numeric` |
 | Artefacts Oracle | Utiliser `EXCLUDE_TABLE` pour filtrer les tables non applicatives |
-| Mots de passe | Utiliser `.pgpass` — jamais en clair dans les scripts |
 | Vérification counts | Comparer Oracle vs PostgreSQL sur toutes les tables post-import |
-| Chemins Windows | Automatiser le remplacement `\` → `/` via PowerShell |
-
 
 > **Environnement :** ora2pg · Oracle 19c · PostgreSQL 15.7 · Windows · Ubuntu 20.04
 > **Repo :** [github.com/Saad7478](https://github.com/Saad7478)
